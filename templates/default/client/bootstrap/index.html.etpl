@@ -1,0 +1,182 @@
+<!doctype html>
+<html class="no-js">
+<head>
+  <meta charset="utf-8">
+  <!-- CONFIGURATION START -->
+  <script>
+    window.CONFIG = {
+      app: {
+        name: '{{ name }}',
+        version: '4.4.0',
+        {{{{raw-helper}}}}
+        server: '{{_ .API_SERVER}}',
+      },
+      payment: '{{_ .PAYMENT_URL}}',
+      beat: {
+        default: {
+          uri: '{{_ .API_SERVER_DEFAULT}}',
+          opts: {
+            query: {
+              appName: 'melody',
+              appVersion: '4.4.0'
+            },
+            debug: {
+              mock: false,
+              disablePolling: true
+            }
+          }
+        },
+        activity: {
+          uri: '{{_ .API_SERVER_ACTIVITY}}',
+          opts: {
+            metas: {
+              appName: 'melody',
+              appVersion: '4.4.0'
+            },
+            debug: {
+              mock: false,
+              disablePolling: true
+            },
+            ncp: '2.0.0'
+          }
+        },
+        shop: {
+          uri: '{{_ .API_SERVER_SHOP}}',
+          opts: {
+            metas: {
+              appName: 'melody',
+              appVersion: '4.4.0'
+            },
+            debug: {
+              mock: false,
+              disablePolling: true
+            },
+            ncp: '2.0.0'
+          }
+        },
+        rank: {
+          uri: '{{_ .API_SERVER_RANK}}',
+          opts: {
+            metas: {
+              appName: 'melody',
+              appVersion: '4.4.0'
+            },
+            debug: {
+              mock: false,
+              disablePolling: true
+            },
+            ncp: '2.0.0'
+          }
+        },
+        goods: {
+          uri: '{{_ .API_SERVER_GOODS}}',
+          opts: {
+            metas: {
+              appName: 'melody',
+              appVersion: '4.4.0'
+            },
+            debug: {
+              mock: false,
+              disablePolling: true
+            },
+            ncp: '2.0.0'
+          }
+        },
+        order: {
+          uri: '{{_ .API_SERVER_ORDER}}',
+          opts: {
+            metas: {
+              appName: 'melody',
+              appVersion: '4.4.0'
+            },
+            debug: {
+              mock: false,
+              disablePolling: true
+            },
+            ncp: '2.0.0'
+          }
+        },
+        diagnosis: {
+          uri: '{{_ .API_SERVER_DIAGNOSIS}}',
+          opts: {
+            metas: {
+              appName: 'melody',
+              appVersion: '4.4.0'
+            },
+            debug: {
+              mock: false,
+              disablePolling: true
+            },
+            ncp: '2.0.0'
+          }
+        },
+        delivery: {
+          uri: '{{_ .API_SERVER_DELIVERY}}',
+          opts: {
+            metas: {
+              appName: 'melody',
+              appVersion: '4.4.0'
+            },
+            debug: {
+              mock: false,
+              disablePolling: true
+            },
+            ncp: '2.0.0'
+          }
+        }
+      },
+      cdnDisabled: {{_ .CDN_DISABLED}},
+      billUrl: '{{_ .BILL_URL}}',
+      chainShopBillUrl: '{{_ .CHAIN_SHOP_BILL_URL}}',
+      allcarriersUrl: '{{_ .ALLCARRIERS_URL}}',
+      allcarriersBillUrl: '{{_ .ALLCARRIERS_BILL_URL}}',
+      ubtUrl: '{{_ .UBT_URL}}'
+      {{{{/raw-helper}}}}
+    };
+  </script>
+  <!-- CONFIGURATION END -->
+
+  <!-- CDN START -->
+  <script>
+    window.CDN_LIST = [
+      'http://static10.elemecdn.com/napos/melody/',
+      '/'
+    ];
+
+    localStorage.CDN_INDEX = window.CONFIG.cdnDisabled
+      ? window.CDN_LIST.length - 1
+      : (localStorage.CDN_INDEX || 0);
+
+    document.write('<base href="HOST">'.replace(
+      /HOST/g,
+      window.CDN_LIST[localStorage.CDN_INDEX]
+    ));
+
+    document.write('<link rel="stylesheet" href="styles.css">');
+  </script>
+  <!-- CDN END -->
+  <title>饿了么商家版</title>
+  <meta name="viewport" content="width=device-width">
+</head>
+<body>
+  <div ui-view class="view-port"></div>
+
+  <script>
+    document.write('<script src="app.js"><\/script>');
+  </script>
+
+  <script async>
+    if (!window.APP_LOADED) {
+      if (localStorage.CDN_INDEX < window.CDN_LIST.length) {
+        localStorage.CDN_INDEX++;
+        location.reload();
+      } else {
+        localStorage.CDN_INDEX = 0;
+        document.write('<h1>网络异常，请稍后重试。</h1>')
+      }
+    } else {
+      localStorage.CDN_INDEX = 0;
+    }
+  </script>
+</body>
+</html>

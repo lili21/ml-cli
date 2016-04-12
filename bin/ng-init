@@ -1,0 +1,71 @@
+#!/usr/bin/env node
+
+var program = require('commander');
+var chalk = require('chalk');
+var path = require('path');
+var exists = require('fs').existsSync;
+var Khaos = require('khaos-patched');
+var logger = require('../lib/logger');
+
+program
+  .usage('[options] <project-name>')
+  .option('-f, --functional', 'using the functional template')
+  .on('--help', function() {
+    console.log('  Examples:')
+    console.log()
+    console.log(chalk.gray('    # create a new project with the default template'))
+    console.log('    $ ng init my-project')
+    console.log()
+    console.log(chalk.gray('    # create a new project with the functional template'))
+    console.log('    $ ng init -f my-project')
+    console.log()
+  })
+  .parse(process.argv);
+
+if (program.args.length < 1) {
+  return program.help();
+}
+
+console.log();
+process.on('exit', function() {
+  console.log();
+});
+
+var name = program.args[0];
+var template = program.functional
+  ? path.join(__dirname, '../templates/functional')
+  : path.join(__dirname, '../templates/default');
+
+var dest = path.resolve(name);
+
+if (exists(dest)) {
+  logger.fatal('"%s" already exists', name);
+}
+
+if (exists(template)) {
+  generate(template, dest, function(err) {
+    if (err) {
+      logger.fatal(err);
+    }
+    console.log();
+    logger.success('Generated "%s".', name);
+  });
+}
+
+function generate(template, dest, fn) {
+  var schema = require('../schema.json');
+  schema.name.default = name;
+  var khaos = new Khaos(template);
+  khaos.format({
+    color: 'green',
+    separator: ': ',
+    prefix: '? '
+  });
+  khaos.schema(schema);
+  khaos.helpers({
+    'raw-helper': function(opts) {
+      return opts.fn();
+    }
+  });
+  khaos.generate(dest, fn);
+}

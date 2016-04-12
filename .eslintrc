@@ -1,0 +1,17 @@
+{
+  "extends": "standard",
+  "rules": {
+    "arrow-parens": [2, "as-needed"],
+    "semi": [2, "always"],
+    "no-multi-spaces": [2, {
+      "exceptions": {
+        "VariableDeclarator": true,
+        "ImportDeclaration": true,
+        "AssignmentExpression": true
+      }
+    }],
+    "space-before-function-paren": [0],
+    "padded-blocks": [0],
+    "comma-dangle": [0]
+  }
+}
