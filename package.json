@@ -4,13 +4,12 @@
   "description": "A simple CLI for scaffolding ml front-end projects.",
   "preferGlobal": true,
   "bin": {
-    "ng": "bin/ng"
+    "ng": "bin/ml"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "ng",
     "cli"
   ],
   "author": "li.li",
@@ -18,7 +17,7 @@
   "dependencies": {
     "chalk": "^1.1.3",
     "commander": "^2.9.0",
-    "khaos-patched": "^0.9.4"
+    "khaos": "^0.9.3"
   },
   "devDependencies": {
     "eslint": "^2.4.0",

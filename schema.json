@@ -14,15 +14,11 @@
     "type": "string",
     "required": false,
     "label": "Project description",
-    "default": "A napos front-end project"
+    "default": "lili's project"
   },
   "author": {
     "type": "string",
     "label": "Author",
-    "default": "napos front-end"
-  },
-  "private": {
-    "type": "boolean",
-    "default": true
+    "default": "li.li"
   }
 }
