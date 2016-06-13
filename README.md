@@ -1,4 +1,4 @@
-# ng-cli
+# ml-cli
 
 A simple CLI for scaffolding napos front-end projects.
 

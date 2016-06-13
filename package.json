@@ -1,17 +1,13 @@
 {
-  "name": "@napos/ng-cli",
+  "name": "ml-cli",
   "version": "1.0.1",
-  "description": "A simple CLI for scaffolding napos front-end projects.",
+  "description": "A simple CLI for scaffolding ml front-end projects.",
   "preferGlobal": true,
   "bin": {
     "ng": "bin/ng"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+http://git.elenet.me/napos.frontend/ng-cli.git"
   },
   "keywords": [
     "ng",
