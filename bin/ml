@@ -5,5 +5,5 @@ var program = require('commander');
 program
   .version(require('../package.json').version)
   .usage('<command>')
-  .command('init <project-name>', 'generate a new project')
+  .command('init', 'generate a new project')
   .parse(process.argv);

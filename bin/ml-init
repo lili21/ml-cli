@@ -1,6 +1,8 @@
 #!/usr/bin/env node
-
 var program = require('commander');
+var rm = require('rimraf').sync;
+var download = require('download-git-repo');
+var uid = require('uid');
 var chalk = require('chalk');
 var path = require('path');
 var exists = require('fs').existsSync;
@@ -8,7 +10,7 @@ var logger = require('../lib/logger');
 var generate = require('../lib/generate');
 
 program
-  .usage('<project-name>')
+  .usage('<template-name> [project-name]')
   .on('--help', function() {
     console.log('  Examples:')
     console.log()
@@ -27,8 +29,8 @@ process.on('exit', function() {
   console.log();
 });
 
-var name = program.args[0];
-var template = path.join(__dirname, '../templates/default');
+var template = program.args[0];
+var name = program.args[1];
 
 var dest = path.resolve(name);
 
@@ -36,6 +38,21 @@ if (exists(dest)) {
   logger.fatal('"%s" already exists', name);
 }
 
+download('lili21/ml-template-' + template, '/tmp', function (err) {
+  if (err) {
+    logger.fatal('Failed to download repo ' + template + ': ' + err.message.trim());
+  }
+  generate(name, tmp, dest, function(err) {
+    if (err) {
+      logger.fatal(err);
+    }
+    console.log();
+    rm('/tmp');
+    logger.success('Generated "%s".', name);
+  });
+});
+
+/*
 if (exists(template)) {
   generate(name, template, dest, function(err) {
     if (err) {
@@ -44,4 +61,4 @@ if (exists(template)) {
     console.log();
     logger.success('Generated "%s".', name);
   });
-}
+}*/
