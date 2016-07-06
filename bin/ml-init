@@ -4,8 +4,8 @@ var program = require('commander');
 var chalk = require('chalk');
 var path = require('path');
 var exists = require('fs').existsSync;
-var Khaos = require('khaos');
 var logger = require('../lib/logger');
+var generate = require('../lib/generate');
 
 program
   .usage('<project-name>')
@@ -37,30 +37,11 @@ if (exists(dest)) {
 }
 
 if (exists(template)) {
-  generate(template, dest, function(err) {
+  generate(name, template, dest, function(err) {
     if (err) {
       logger.fatal(err);
     }
     console.log();
     logger.success('Generated "%s".', name);
   });
-}
-
-function generate(template, dest, fn) {
-  var schema = require('../schema.json');
-  schema.name.default = name;
-  var khaos = new Khaos(template);
-  khaos.format({
-    color: 'green',
-    separator: ': ',
-    prefix: '? '
-  });
-  khaos.schema(schema);
-  // khaos.prompt(schema);
-  khaos.helpers({
-    'noop': function(opts) {
-      return opts.fn();
-    }
-  });
-  khaos.generate(dest, fn);
 }
