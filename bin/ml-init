@@ -38,27 +38,24 @@ if (exists(dest)) {
   logger.fatal('"%s" already exists', name);
 }
 
-download('lili21/ml-template-' + template, '/tmp', function (err) {
+var tmp = '/tmp/ml-tmp' + uid();
+var spinner = require('ora')('downloading template');
+spinner.start();
+
+download('lili21/ml-template-' + template, tmp, function (err) {
+  spinner.stop()
+  process.on('exit', function () {
+    rm(tmp)
+  })
   if (err) {
     logger.fatal('Failed to download repo ' + template + ': ' + err.message.trim());
   }
-  generate(name, tmp, dest, function(err) {
+
+  generate(name, tmp + '/template', dest, function(err) {
     if (err) {
       logger.fatal(err);
     }
     console.log();
-    rm('/tmp');
     logger.success('Generated "%s".', name);
   });
 });
-
-/*
-if (exists(template)) {
-  generate(name, template, dest, function(err) {
-    if (err) {
-      logger.fatal(err);
-    }
-    console.log();
-    logger.success('Generated "%s".', name);
-  });
-}*/

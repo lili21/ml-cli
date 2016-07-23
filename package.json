@@ -4,7 +4,7 @@
   "description": "A simple CLI for scaffolding ml front-end projects.",
   "preferGlobal": true,
   "bin": {
-    "ng": "bin/ml"
+    "ml": "bin/ml"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -27,6 +27,7 @@
     "handlebars": "^4.0.5",
     "inquirer": "^1.0.3",
     "metalsmith": "^2.1.0",
+    "ora": "^0.2.3",
     "rimraf": "^2.5.3",
     "uid": "0.0.2"
   },
