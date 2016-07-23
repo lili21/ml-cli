@@ -12,7 +12,5 @@ $ ml init <template-name> <project-name>
 ## Avalaible template
 
 - [angular](https://github.com/lili21/ml-template-angular)
-- [webpack](https://github.com/lili21/ml-template-webpack)
 - [rollup](https://github.com/lili21/ml-template-rollup)
-- [browserify](https://github.com/lili21/ml-template-browserify)
 
