@@ -22,7 +22,7 @@ export default function (argv) {
       loader: 'postcss-loader',
       options: {
         plugins: [ autoprefixer({ browsers }) ],
-        sourcceMap: isProd
+        sourceMap: isProd
       }
     }
   ]

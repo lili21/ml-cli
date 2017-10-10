@@ -17,9 +17,8 @@ export default {
     }
   },
 
-  async handler (argv) {
+  handler (argv) {
     argv.isProd = false
-    argv.cwd = process.cwd()
     runWebpack(argv)
   }
 }

@@ -16,7 +16,7 @@ export default {
     }
   },
 
-  async handler ({ name }) {
+  handler ({ name }) {
     const dest = path.resolve(process.cwd(), name)
     if (exists(dest)) {
       console.error(chalk.red(`Error: Target directory ${name} already exists.`))
