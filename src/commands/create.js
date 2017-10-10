@@ -8,7 +8,7 @@ import Metalsmith from 'metalsmith'
 
 export default {
   command: 'create <name>',
-  describe: 'create new project',
+  describe: 'Create new project.',
 
   builder: {
     name: {

@@ -1,10 +1,9 @@
 {
   "name": "@lls/lls-cli",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "cli for lls frontend project",
   "main": "./dist/lls.js",
   "author": "li.li",
-  "license": "MIT",
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.0",
