@@ -5,24 +5,37 @@ import async from 'async'
 import chalk from 'chalk'
 import { handlebars } from 'consolidate'
 import Metalsmith from 'metalsmith'
+import gitclone from 'git-clone'
+import rm from 'rimraf'
+import ora from 'ora'
 
 export default {
-  command: 'create <name>',
+  command: 'create <name> [repo]',
   describe: 'Create new project.',
 
   builder: {
+    repo: {
+      description: 'template repo',
+      default: 'git@git.llsapp.com:frontend/mobile-template.git'
+    },
     name: {
       description: 'project name'
     }
   },
 
-  handler ({ name }) {
+  async handler ({ repo, name }) {
+    const spinner = ora('generating project')
+    spinner.start()
+
     const dest = path.resolve(process.cwd(), name)
     if (exists(dest)) {
       console.error(chalk.red(`Error: Target directory ${name} already exists.`))
       process.exit(1)
     }
 
+    const tmp = '/tmp/lls-tmp' + Date.now()
+
+    await clone(repo, tmp)
     let author
     let email
     try {
@@ -39,13 +52,18 @@ export default {
         email,
         description: 'lls frontend project'
       })
-      .source('../template')
+      .source(tmp)
       .destination(dest)
       .use(template)
       .build(err => {
+        spinner.stop()
         if (err) throw err
         console.log(chalk.green(`${name} project created`))
       })
+
+    process.on('exit', () => {
+      rm.sync(tmp)
+    })
   }
 }
 
@@ -63,4 +81,22 @@ function template (files, metalsmith, done) {
       done()
     })
   }
+}
+
+function clone (repo, dest) {
+  return new Promise((resolve, reject) => {
+    gitclone(repo, dest, { shallow: true }, err => {
+      if (err) {
+        reject(err)
+      } else {
+        rm(dest + '/.git', _err => {
+          if (_err) {
+            reject(err)
+          } else {
+            resolve()
+          }
+        })
+      }
+    })
+  })
 }

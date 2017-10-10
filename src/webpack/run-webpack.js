@@ -7,7 +7,6 @@ import rm from 'rimraf'
 import buildWebpackConfig from './build-webpack-config'
 
 export default function (argv) {
-  console.log(argv)
   if (argv.isProd) {
     prodBuild(argv)
   } else {
