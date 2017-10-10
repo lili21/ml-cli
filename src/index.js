@@ -1,11 +1,12 @@
 import yargs from 'yargs'
 import create from './commands/create'
-// import start from './commands/start'
+import watch from './commands/watch'
 // import build from './commands/build'
 
+// eslint-disable-next-line
 yargs
   .command(create)
-  // .command(start)
+  .command(watch)
   // .command(build)
   .demandCommand()
   .help()

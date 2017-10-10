@@ -16,7 +16,7 @@ export default {
     }
   },
 
-  async handler({ name }) {
+  async handler ({ name }) {
     const dest = path.resolve(process.cwd(), name)
     if (exists(dest)) {
       console.error(chalk.red(`Error: Target directory ${name} already exists.`))
@@ -32,12 +32,12 @@ export default {
     author = author ? author.toString().trim() : ''
     email = email ? ` <${email.toString().trim()}> ` : ''
 
-    const metalsmith = Metalsmith(__dirname)
+    Metalsmith(__dirname)
       .metadata({
         name,
         author,
         email,
-        description: 'lls frontend project',
+        description: 'lls frontend project'
       })
       .source('../template')
       .destination(dest)
@@ -49,17 +49,17 @@ export default {
   }
 }
 
-function template(files, metalsmith, done) {
+function template (files, metalsmith, done) {
   const keys = Object.keys(files)
   const metadata = metalsmith.metadata()
 
   async.each(keys, run, done)
 
-  function run(file, done) {
+  function run (file, done) {
     const str = files[file].contents.toString()
     handlebars.render(str, metadata, (err, res) => {
       if (err) return done(err)
-      files[file].contents = new Buffer(res)
+      files[file].contents = Buffer.from(res)
       done()
     })
   }

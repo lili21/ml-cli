@@ -1,0 +1,13 @@
+{
+  "presets": [
+    ["env", {
+      "targets": { "browsers": [ "Chrome 50" ] },
+      "modules": false
+    }],
+    "stage-2"
+  ],
+  "plugins": [
+    "transform-decorators-legacy",
+    ["transform-react-jsx"]
+  ]
+}
