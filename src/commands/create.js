@@ -1,6 +1,6 @@
 import path from 'path'
-import { existsSync as exists } from 'fs'
-import { execSync as exec } from 'child_process'
+import { stat } from 'fs'
+import { exec } from 'child_process'
 import async from 'async'
 import chalk from 'chalk'
 import { handlebars } from 'consolidate'
@@ -8,6 +8,7 @@ import Metalsmith from 'metalsmith'
 import gitclone from 'git-clone'
 import rm from 'rimraf'
 import ora from 'ora'
+import promisify from '../promisify'
 
 export default {
   command: 'create <name> [repo]',
@@ -24,23 +25,28 @@ export default {
   },
 
   async handler ({ repo, name }) {
+    const dest = path.resolve(process.cwd(), name)
+    try {
+      const exists = (await promisify(stat)(dest)).isDirectory()
+      if (exists) {
+        console.error(chalk.red(`Error: Target directory ${name} already exists.`))
+        process.exit(1)
+      }
+    } catch (e) {}
+
     const spinner = ora('generating project')
     spinner.start()
 
-    const dest = path.resolve(process.cwd(), name)
-    if (exists(dest)) {
-      console.error(chalk.red(`Error: Target directory ${name} already exists.`))
-      process.exit(1)
-    }
-
     const tmp = '/tmp/lls-tmp' + Date.now()
+    await promisify(gitclone)(repo, tmp, { shallow: true })
+    await promisify(rm)(tmp + '/.git')
 
-    await clone(repo, tmp)
     let author
     let email
+    const execAsync = promisify(exec)
     try {
-      author = exec('git config --get user.name')
-      email = exec('git config --get user.email')
+      author = await execAsync('git config --get user.name')
+      email = await execAsync('git config --get user.email')
     } catch (e) {}
     author = author ? author.toString().trim() : ''
     email = email ? ` <${email.toString().trim()}> ` : ''
@@ -81,22 +87,4 @@ function template (files, metalsmith, done) {
       done()
     })
   }
-}
-
-function clone (repo, dest) {
-  return new Promise((resolve, reject) => {
-    gitclone(repo, dest, { shallow: true }, err => {
-      if (err) {
-        reject(err)
-      } else {
-        rm(dest + '/.git', _err => {
-          if (_err) {
-            reject(err)
-          } else {
-            resolve()
-          }
-        })
-      }
-    })
-  })
 }

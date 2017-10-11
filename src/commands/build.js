@@ -4,8 +4,8 @@ export default {
 
   describe: 'Build for production.',
 
-  handler (argv) {
+  async handler (argv) {
     argv.isProd = true
-    runWebpack(argv)
+    await runWebpack(argv)
   }
 }

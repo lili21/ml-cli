@@ -5,18 +5,19 @@ import ip from 'ip'
 import ora from 'ora'
 import rm from 'rimraf'
 import buildWebpackConfig from './build-webpack-config'
+import promisify from '../promisify'
 
-export default function (argv) {
+export default async function (argv) {
   if (argv.isProd) {
-    prodBuild(argv)
+    await prodBuild(argv)
   } else {
-    devBuild(argv)
+    await devBuild(argv)
   }
 }
 
-function devBuild (argv) {
+async function devBuild (argv) {
   const port = argv.port
-  const config = buildWebpackConfig(argv)
+  const config = await buildWebpackConfig(argv)
   const compiler = webpack(config)
   compiler.plugin('done', stats => {
     const serverAddr = `http://localhost:${chalk.bold(port)}`
@@ -36,29 +37,25 @@ function devBuild (argv) {
   server.listen(port)
 }
 
-function prodBuild (argv) {
+async function prodBuild (argv) {
   const spinner = ora('building for production ...')
   spinner.start()
 
-  const config = buildWebpackConfig(argv)
-  rm('dist/', err => {
-    if (err) throw err
-    webpack(config, (err, stats) => {
-      spinner.stop()
-      if (err) throw err
-      process.stdout.write(stats.toString({
-        colors: true,
-        modules: false,
-        children: false,
-        chunks: false,
-        chunkModules: false
-      }) + '\n\n')
+  const config = await buildWebpackConfig(argv)
+  await promisify(rm)('dist/')
+  const stats = await promisify(webpack)(config)
+  spinner.stop()
+  console.log(stats.toString({
+    colors: true,
+    modules: false,
+    children: false,
+    chunks: false,
+    chunkModules: false
+  }) + '\n\n')
 
-      console.log(chalk.cyan('  Build complete.\n'))
-      console.log(chalk.yellow(
-        '  Tip: built files are meant to be served over an HTTP server.\n' +
-        '  Opening index.html over file:// won\'t work.\n'
-      ))
-    })
-  })
+  console.log(chalk.cyan('  Build complete.\n'))
+  console.log(chalk.yellow(
+    '  Tip: built files are meant to be served over an HTTP server.\n' +
+    '  Opening index.html over file:// won\'t work.\n'
+  ))
 }
