@@ -1,6 +1,6 @@
 {
   "name": "@lls/lls-cli",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "cli for lls frontend project",
   "main": "./dist/lls.js",
   "author": "li.li",
