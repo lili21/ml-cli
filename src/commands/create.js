@@ -58,7 +58,7 @@ export default {
         email,
         description: 'lls frontend project'
       })
-      .source(tmp)
+      .source(path.join(tmp, 'template'))
       .destination(dest)
       .use(template)
       .build(err => {
