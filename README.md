@@ -24,7 +24,7 @@ lls build
 ```
 
 
-Custom Congiguration
+Custom Configuration
 --------------------
 
 #### Browserslist
