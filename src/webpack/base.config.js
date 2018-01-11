@@ -2,6 +2,8 @@ import path from 'path'
 import autoprefixer from 'autoprefixer'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
 
+import BBO from './build-babel-options'
+
 export const resolvePath = _path => {
   return path.resolve(process.cwd(), _path)
 }
@@ -9,12 +11,12 @@ export const resolvePath = _path => {
 export const srcPath = resolvePath('src')
 
 export default function (argv) {
-  const { isProd, babelrc, browsers } = argv
+  const { isProd, browsers } = argv
   const loadersForStyle = [
     {
       loader: 'css-loader',
       options: {
-        sourceMap: isProd,
+        sourceMap: !isProd,
         importLoaders: 1
       }
     },
@@ -22,12 +24,12 @@ export default function (argv) {
       loader: 'postcss-loader',
       options: {
         plugins: [ autoprefixer({ browsers }) ],
-        sourceMap: isProd
+        sourceMap: !isProd
       }
     }
   ]
   return {
-    entry: { app: ['./src/entry.js'] },
+    entry: { app: ['./src/'] },
 
     output: {
       path: resolvePath('dist'),
@@ -58,6 +60,7 @@ export default function (argv) {
       'react': 'React',
       'react-dom': 'ReactDOM'
     },
+
     module: {
       rules: [
         // {
@@ -81,7 +84,7 @@ export default function (argv) {
             {
               loader: 'sass-loader',
               options: {
-                sourceMap: isProd
+                sourceMap: !isProd
               }
             }
           ]
@@ -104,22 +107,7 @@ export default function (argv) {
           use: [
             {
               loader: 'babel-loader',
-              options: Object.assign(
-                {
-                  babelrc: false,
-                  presets: [
-                    [require.resolve('babel-preset-env'), {
-                      targets: { browsers },
-                      modules: false
-                    }],
-                    require.resolve('babel-preset-stage-2')
-                  ],
-                  plugins: [
-                    require.resolve('babel-plugin-transform-react-jsx')
-                  ]
-                },
-                babelrc
-              )
+              options: BBO(argv)
             }
           ]
         },

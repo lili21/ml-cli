@@ -16,10 +16,14 @@ export default async function (argv) {
 }
 
 async function devBuild (argv) {
+  const spinner = ora('compiling ...')
+  spinner.start()
+
   const port = argv.port
   const config = await buildWebpackConfig(argv)
   const compiler = webpack(config)
   compiler.plugin('done', stats => {
+    spinner.stop()
     const serverAddr = `http://localhost:${chalk.bold(port)}`
     const localIpAddr = `http://${ip.address()}:${chalk.bold(port)}`
 

@@ -2,7 +2,7 @@ import chalk from 'chalk'
 import checkDeps from 'check-dependencies'
 import runWebpack from '../webpack/run-webpack'
 export default {
-  command: 'watch',
+  command: 'start',
 
   describe: 'Start a development live-reload server.',
 

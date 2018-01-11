@@ -3,12 +3,13 @@ import webpack from 'webpack'
 import merge from 'webpack-merge'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
+import  OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin'
 // import UglifyJSPlugin from 'uglifyjs-webpack-plugin'
 import baseConfig from './base.config'
 
 export default function (argv) {
   const config = merge(baseConfig(argv), {
-    devtool: 'source-map',
+    devtool: 'hidden-source-map',
     output: {
       filename: 'static/js/[name].[chunkhash:6].js',
       chunkFilename: 'static/js/[name].[chunkhash:6].chunk.js',
@@ -18,9 +19,11 @@ export default function (argv) {
       new webpack.DefinePlugin({
         'process.env.NODE_ENV': '"production"'
       }),
+
       new ExtractTextPlugin({
         filename: 'static/css/[name].[contenthash:6].css'
       }),
+
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'src/index.html',
@@ -32,10 +35,20 @@ export default function (argv) {
         },
         chunksSortMode: 'dependency'
       }),
+
+      new OptimizeCSSPlugin({
+        cssProcessorOptions: {
+          safe: true
+        }
+      }),
+
+      new webpack.optimize.ModuleConcatenationPlugin(),
+
       new webpack.optimize.UglifyJsPlugin({
         compress: { warnings: false },
         sourceMap: true
       }),
+
       // new UglifyJSPlugin({
       //   uglifyOptions: {
       //     ecma: 5,
@@ -45,23 +58,44 @@ export default function (argv) {
       //   },
       //   sourceMap: true
       // }),
+
       new webpack.HashedModuleIdsPlugin(),
+
+      new webpack.NamedChunksPlugin(chunk => {
+        if (chunk.name) {
+          return chunk.name
+        } else {
+          // return chunk.mapModules(m => path.relative(m.context, m.request)).pop()
+          // 根据路径hash或许是更好的方案，
+          return 'no-name-chunk'
+        }
+      }),
+
       new webpack.optimize.CommonsChunkPlugin({
         name: 'vendor',
-        minChunks: function (module) {
-          // any required modules inside node_modules are extracted to vendor
+        minChunks (module) {
           return (
             module.resource &&
             /\.js$/.test(module.resource) &&
-            module.resource.indexOf(path.join(argv.cwd, 'node_modules')) === 0
+            /node_modules/.test(module.resource)
           )
         }
       }),
+
       // extract webpack runtime and module manifest to its own file in order to
       // prevent vendor hash from being updated whenever app bundle is updated
       new webpack.optimize.CommonsChunkPlugin({
-        name: 'manifest',
-        chunks: ['vendor']
+        name: 'runtime',
+        minChunks: Infinity
+      }),
+
+      // extracts shared chunks from code splitted chunks
+      // https://github.com/webpack/webpack/issues/4392
+      new webpack.optimize.CommonsChunkPlugin({
+        name: 'app',
+        async: 'async-vendor',
+        children: true,
+        minChunks: 3
       })
     ]
   })
