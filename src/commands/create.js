@@ -17,7 +17,7 @@ export default {
   builder: {
     repo: {
       description: 'template repo',
-      default: 'git@git.llsapp.com:li.li/lls-cli-template.git'
+      default: 'git@git.llsapp.com:li.li/lls-cli-template-default.git'
     },
     name: {
       description: 'project name'
