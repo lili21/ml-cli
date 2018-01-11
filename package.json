@@ -8,7 +8,6 @@
   ],
   "author": "li.li",
   "devDependencies": {
-    "babel-core": "^6.26.0",
     "eslint": "^4.8.0",
     "eslint-config-standard": "^10.2.1",
     "eslint-plugin-import": "^2.7.0",
@@ -31,6 +30,7 @@
   "dependencies": {
     "async": "^2.5.0",
     "autoprefixer": "^7.1.5",
+    "babel-core": "^6.26.0",    
     "babel-loader": "^7.1.2",
     "babel-plugin-lodash": "^3.3.2",
     "babel-plugin-transform-react-constant-elements": "^6.23.0",
