@@ -1,9 +1,9 @@
-import path from 'path'
+// import path from 'path'
 import webpack from 'webpack'
 import merge from 'webpack-merge'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import ExtractTextPlugin from 'extract-text-webpack-plugin'
-import  OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin'
+import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin'
 // import UglifyJSPlugin from 'uglifyjs-webpack-plugin'
 import baseConfig from './base.config'
 
