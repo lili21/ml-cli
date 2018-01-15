@@ -1,12 +1,12 @@
-lls-cli
+ml-cli
 =======
-> for lls front-end project
+> for lili's react project
 
 Installation
 ------------
 
 ```bash
-$ cnpm install @lls/lls-cli -g
+$ npm install ml-cli -g
 ```
 
 Usage
@@ -14,19 +14,19 @@ Usage
 
 ```
 # Create new project
-lls create my-projec-name
+ml create my-projec-name
 
 # Start a development live-reload server
-lls start
+ml start
 
 # Build for production
-lls build
+ml build
 ```
 
 CLI Options
 -----------
 
-**lls start**
+**ml start**
 
 ```bash
 --port, -p     Port to start a server on             [string]    [default: "8080"]
@@ -49,11 +49,11 @@ create a `.babelrc` file in your project's root directory.
 
 **Webpack**
 
-create a `lls.config.js` file which exports function that will change the webpack's config
+create a `ml.config.js` file which exports function that will change the webpack's config
 
 ```
 export default function (config, argv) {
-  config.output.publicPath = 'https://cdn.lls.com/'
+  config.output.publicPath = '//cdn.example.com'
 }
 ```
 
