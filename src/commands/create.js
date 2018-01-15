@@ -17,7 +17,7 @@ export default {
   builder: {
     repo: {
       description: 'template repo',
-      default: 'git@git.llsapp.com:li.li/lls-cli-template-default.git'
+      default: 'git@github.com:lili21/ml-template-default.git'
     },
     name: {
       description: 'project name'
@@ -37,7 +37,7 @@ export default {
     const spinner = ora('generating project')
     spinner.start()
 
-    const tmp = '/tmp/lls-tmp' + Date.now()
+    const tmp = '/tmp/ml-tmp' + Date.now()
     await promisify(gitclone)(repo, tmp, { shallow: true })
     await promisify(rm)(tmp + '/.git')
 
@@ -56,7 +56,7 @@ export default {
         name,
         author,
         email,
-        description: 'lls frontend project'
+        description: 'ml frontend project'
       })
       .source(path.join(tmp, 'template'))
       .destination(dest)

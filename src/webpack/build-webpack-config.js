@@ -16,12 +16,12 @@ export default async function (argv) {
 
   const config = isProd ? prodConfig(argv) : devConfig(argv)
 
-  const llsConfig = resolve(cwd, 'lls.config.js')
+  const mlConfig = resolve(cwd, 'ml.config.js')
   let customConfigFn = () => {}
   try {
-    await promisify(access)(llsConfig)
+    await promisify(access)(mlConfig)
     require('babel-register')({ presets: [ require.resolve('babel-preset-env') ] })
-    const fn = require(llsConfig)
+    const fn = require(mlConfig)
     customConfigFn = (fn && fn.default) || fn
   } catch (e) {}
 

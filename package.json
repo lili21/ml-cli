@@ -1,8 +1,8 @@
 {
-  "name": "@lls/lls-cli",
-  "version": "0.3.0-alpha.2",
-  "description": "cli for lls frontend project",
-  "main": "./dist/lls.js",
+  "name": "ml-cli",
+  "version": "2.0.0",
+  "description": "cli tools for lili's React project",
+  "main": "./dist/ml.js",
   "files": [
     "dist"
   ],
@@ -21,7 +21,7 @@
     "node": ">=6"
   },
   "bin": {
-    "lls": "./dist/lls.js"
+    "ml": "./dist/ml.js"
   },
   "scripts": {
     "build": "rollup --config rollup.config.js",

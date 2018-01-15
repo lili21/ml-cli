@@ -4,7 +4,7 @@ export default {
   banner: '#!/usr/bin/env node',
   input: 'src/index',
   output: {
-    file: 'dist/lls.js',
+    file: 'dist/ml.js',
     format: 'cjs'
   },
   plugins: [
