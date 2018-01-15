@@ -9,7 +9,7 @@ export default async function (argv) {
   const { isProd } = argv
   const cwd = process.cwd()
   const babelrc = await readJson(resolve(cwd, '.babelrc'))
-  const browsers = (await readJson(resolve(cwd, 'package.json'))).browserslist || [ 'Android >= 4', 'iOS >= 9' ]
+  const browsers = (await readJson(resolve(cwd, 'package.json'))).browserslist || [ '> 1%', 'last 2 versions' ]
   argv.cwd = cwd
   argv.babelrc = babelrc
   argv.browsers = browsers

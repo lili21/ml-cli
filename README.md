@@ -38,7 +38,7 @@ Custom Configuration
 
 **Browserslist**
 
-declare a `browserslist` key within your `package.json`. default list is `[ 'Android >=4', 'iOS >= 7' ]`
+declare a `browserslist` key within your `package.json`. default list is `[ '> 1%', 'last 2 versions' ]`
 
 
 **Babel**
@@ -60,5 +60,5 @@ export default function (config, argv) {
 Credits
 -------
 
-[preact-cli](https://github.com/developit/preact-cli)
-[vue-cli](https://github.com/vuejs/vue-cli)
+- [preact-cli](https://github.com/developit/preact-cli)
+- [vue-cli](https://github.com/vuejs/vue-cli)
