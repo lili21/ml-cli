@@ -42,24 +42,34 @@ async function devBuild (argv) {
 }
 
 async function prodBuild (argv) {
-  const spinner = ora('building for production ...')
+  const spinner = ora(`building for ${argv.env} ...`)
   spinner.start()
 
-  const config = await buildWebpackConfig(argv)
-  await promisify(rm)('dist/')
-  const stats = await promisify(webpack)(config)
-  spinner.stop()
-  console.log(stats.toString({
-    colors: true,
-    modules: false,
-    children: false,
-    chunks: false,
-    chunkModules: false
-  }) + '\n\n')
+  try {
+    const config = await buildWebpackConfig(argv)
+    await promisify(rm)('dist/')
+    const stats = await promisify(webpack)(config)
+    spinner.stop()
 
-  console.log(chalk.cyan('  Build complete.\n'))
-  console.log(chalk.yellow(
-    '  Tip: built files are meant to be served over an HTTP server.\n' +
-    '  Opening index.html over file:// won\'t work.\n'
-  ))
+    if (stats.hasErrors()) {
+      throw stats.toJson().errors
+    }
+
+    console.log(stats.toString({
+      colors: true,
+      modules: false,
+      children: false,
+      chunks: false,
+      chunkModules: false
+    }) + '\n\n')
+
+    console.log(chalk.cyan('  Build complete.\n'))
+    console.log(chalk.yellow(
+      '  Tip: built files are meant to be served over an HTTP server.\n' +
+      '  Opening index.html over file:// won\'t work.\n'
+    ))
+  } catch (e) {
+    console.error(e)
+    process.exit(1)
+  }
 }

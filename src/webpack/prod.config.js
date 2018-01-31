@@ -2,7 +2,7 @@
 import webpack from 'webpack'
 import merge from 'webpack-merge'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import ExtractTextPlugin from 'extract-text-webpack-plugin'
+// import ExtractTextPlugin from 'extract-text-webpack-plugin'
 import OptimizeCSSPlugin from 'optimize-css-assets-webpack-plugin'
 // import UglifyJSPlugin from 'uglifyjs-webpack-plugin'
 import baseConfig from './base.config'
@@ -17,11 +17,8 @@ export default function (argv) {
     },
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': '"production"'
-      }),
-
-      new ExtractTextPlugin({
-        filename: 'static/css/[name].[contenthash:6].css'
+        'process.env.NODE_ENV': '"production"',
+        __APP_ENV__: JSON.stringify(argv.env)
       }),
 
       new HtmlWebpackPlugin({
@@ -33,7 +30,8 @@ export default function (argv) {
           collapseWhitespace: true,
           removeAttributeQuotes: true
         },
-        chunksSortMode: 'dependency'
+        chunksSortMode: 'dependency',
+        __APP_ENV__: argv.env
       }),
 
       new OptimizeCSSPlugin({

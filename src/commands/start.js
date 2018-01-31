@@ -22,6 +22,7 @@ export default {
   async handler (argv) {
     const { depsWereOk, error } = await checkDeps({ packageDir: process.cwd() })
     if (depsWereOk) {
+      argv.env = 'development'
       argv.isProd = false
       await runWebpack(argv)
     } else {

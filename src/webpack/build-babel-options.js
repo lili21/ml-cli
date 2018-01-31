@@ -1,5 +1,7 @@
+import { omit, assign } from 'lodash'
+
 export default function BBO ({ isProd, babelrc, browsers }) {
-  const options = Object.assign(
+  const options = assign(
     {
       babelrc: false,
       presets: [
@@ -8,14 +10,17 @@ export default function BBO ({ isProd, babelrc, browsers }) {
           modules: false
         }],
         require.resolve('babel-preset-stage-2'),
-        require.resolve('babel-preset-react')
+        require.resolve('babel-preset-react'),
+        ...(babelrc.presets || [])
       ],
       plugins: [
         require.resolve('babel-plugin-lodash'),
-        require.resolve('babel-plugin-transform-runtime')
+        require.resolve('babel-plugin-transform-decorators-legacy'),
+        require.resolve('babel-plugin-transform-runtime'),
+        ...(babelrc.plugins || [])
       ]
     },
-    babelrc
+    omit(babelrc, ['presets', 'plugins'])
   )
 
   if (isProd) {

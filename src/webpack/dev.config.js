@@ -13,14 +13,16 @@ export default function (argv) {
     devtool: 'cheap-module-eval-source-map',
     plugins: [
       new webpack.DefinePlugin({
-        'process.env.NODE_ENV': '"development"'
+        'process.env.NODE_ENV': '"development"',
+        __APP_ENV__: JSON.stringify(argv.env)
       }),
       new webpack.HotModuleReplacementPlugin(),
       new webpack.NoEmitOnErrorsPlugin(),
       new HtmlWebpackPlugin({
         filename: 'index.html',
         template: 'src/index.html',
-        inject: true
+        inject: true,
+        __APP_ENV__: argv.env
       }),
       new FriendlyErrorsPlugin()
     ],
